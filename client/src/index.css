@@ -1,0 +1,45 @@
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    font-family: "Poppins", sans-serif;
+}
+
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: #728294;
+    border-radius: 100vh;
+    border: 3px solid transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #5b6674;
+}
+
+.body_scrollbar {
+    /* padding-right: var(--scrollbar-compensation); */
+
+    margin-right: var(--scrollbar-compensation);
+}
+.body_scrollbar_padding {
+    padding-right: var(--scrollbar-compensation);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .input-field {
+        @apply bg-black rounded-lg p-4 shadow-xl;
+    }
+}

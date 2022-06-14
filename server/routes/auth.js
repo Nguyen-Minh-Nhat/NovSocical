@@ -1,8 +1,20 @@
-const express = require('express');
-const router = express.Router();
+const router = require("express").Router();
+const verifyToken = require("../middleware/auth");
+const authController = require("../controllers/authController");
 
-const User = require('../models/User');
+//send otp
+router.post("/otp", authController.sendOTP);
 
-router.get('/', (req, res) => res.send('User'));
+//comfirmOTP
+router.post("/confirmOtp", authController.confirmOTP);
+
+//Register an account
+router.post("/register", authController.register);
+
+//Login
+router.post("/login", authController.login);
+
+//Auth
+router.get("/", verifyToken, authController.auth);
 
 module.exports = router;

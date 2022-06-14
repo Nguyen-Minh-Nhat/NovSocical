@@ -1,0 +1,18 @@
+.user-card {
+  position: fixed;
+  top: 0;
+  right: 1rem;
+  display: flex;
+  padding: 4rem;
+  flex-direction: column;
+  background: blue;
+}
+
+.user-card .user-info {
+  padding-bottom: 4rem;
+  border-bottom: 1px solid black;
+}
+
+.user-card .user-hp {
+  padding-top: 4rem;
+}
