@@ -1,26 +1,46 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import postApi from '../../../../api/postApi';
-import Modal from '../../../../components/Modal';
+import { alerts } from '../../../../components/Alert/alertSlice';
+import { loading } from '../../../../components/Loading/loadingSlice';
+import { setModal } from '../../../../components/Modal/modalSlice';
 import PostForm from '../../components/PostForm';
 import { addNewPost, updatePost } from '../../postSlice';
 
-function AddEditPost({ setIsAddEditPost, content }) {
+function AddEditPost({ initialData }) {
 	const dispatch = useDispatch();
-	const [isUploading, setIsUploading] = useState(false);
 	const user = useSelector((state) => state.user.current);
-
+	let modalAction = setModal({ isOpen: false, children: null });
 	const handleCreateNewPost = async (data) => {
 		data.append('email', user.email);
-		setIsUploading(true);
+
+		//set loading
+		let loadingAction = loading({ loading: true });
+		dispatch(loadingAction);
+
 		try {
 			const res = await postApi.create(data);
 			if (res.data.success) {
-				setIsUploading(false);
+				loadingAction = loading({ loading: false });
+				const alertAction = alerts({
+					type: 'success',
+					message: 'your post has been created',
+				});
+				dispatch(loadingAction);
+				dispatch(alertAction);
+				dispatch(modalAction);
+
 				const newPost = res.data.newPost;
 				const action = addNewPost(newPost);
 				dispatch(action);
-				setIsAddEditPost(false);
+			} else {
+				loadingAction = loading({ loading: false });
+				const alertAction = alerts({
+					type: ' failure',
+					message: 'something went wrong',
+				});
+				dispatch(alertAction);
+				dispatch(modalAction);
 			}
 		} catch (error) {
 			console.log(error);
@@ -28,28 +48,40 @@ function AddEditPost({ setIsAddEditPost, content }) {
 	};
 
 	const handleEditPost = async (data) => {
-		setIsUploading(true);
+		let loadingAction = loading({ loading: true });
+		dispatch(loadingAction);
 		const isImageChange = !(
-			data.get('postImage') === content.initialValue.postImage
+			data.get('postImage') === initialData.initialValue.postImage
 		);
 		if (
 			!isImageChange &&
-			data.get('postText') === content.initialValue.postText
+			data.get('postText') === initialData.initialValue.postText
 		) {
-			setIsAddEditPost(false);
+			loadingAction = loading({ loading: false });
+			dispatch(loadingAction);
+			dispatch(modalAction);
 		} else {
 			try {
 				data.append('email', user.email);
 				data.append('isImageChange', isImageChange);
 				const res = await postApi.updatePostById(
-					content.initialValue._id,
+					initialData.initialValue._id,
 					data
 				);
 				if (res.data.success) {
-					const updatedPost = res.data.updatedPost;
-					const action = updatePost(updatedPost);
+					const action = updatePost(res.data.updatedPost);
 					dispatch(action);
-					setIsAddEditPost(false);
+					loadingAction = loading({ loading: false });
+					dispatch(loadingAction);
+					dispatch(modalAction);
+				} else {
+					loadingAction = loading({ loading: false });
+					const alertAction = alerts({
+						type: ' failure',
+						message: 'something went wrong',
+					});
+					dispatch(alertAction);
+					dispatch(modalAction);
 				}
 			} catch (error) {
 				alert(error);
@@ -58,18 +90,13 @@ function AddEditPost({ setIsAddEditPost, content }) {
 	};
 
 	return (
-		<>
-			<Modal setIsOpen={setIsAddEditPost}>
-				<PostForm
-					onSubmit={
-						content.type === 'create' ? handleCreateNewPost : handleEditPost
-					}
-					isUploading={isUploading}
-					initialData={content.initialValue}
-					type={content.type}
-				/>
-			</Modal>
-		</>
+		<PostForm
+			onSubmit={
+				initialData.type === 'create' ? handleCreateNewPost : handleEditPost
+			}
+			initialData={initialData.initialValue}
+			type={initialData.type}
+		/>
 	);
 }
 

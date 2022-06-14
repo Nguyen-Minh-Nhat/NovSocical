@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import InputSelect from './InputSelect';
 
-function DatePicker({ setDate }) {
+function DatePicker({ setDate, initialValue }) {
 	const currentDate = new Date();
 	const [maxDay, setMaxDay] = useState(31);
 	const [month, setMonth] = useState();
 	const [year, setYear] = useState();
 	const [day, setDay] = useState();
 	const [typeSelect, setTypeSelect] = useState();
+
+	useEffect(() => {
+		if (initialValue) {
+			const initialDate = new Date(initialValue);
+			setDay(initialDate.getDate());
+			setMonth(initialDate.getMonth() + 1);
+			setYear(initialDate.getFullYear());
+		}
+	}, []);
 
 	useEffect(() => {
 		switch (month) {
@@ -26,14 +35,15 @@ function DatePicker({ setDate }) {
 	}, [month]);
 	useEffect(() => {
 		if (month && day && year) {
-			const date = new Date(year, month, day);
+			const newMonth = month - 1;
+			const date = new Date(year, newMonth, day);
 			setDate(date);
 		}
 	}, [month, day, year]);
 	return (
 		<div>
 			<label
-				className="text-2xl font-normal text-gray-600 mb-3"
+				className="text-2xl font-normal text-gray-600 mb-3 dark:text-textColorDark"
 				htmlFor="email"
 			>
 				Date of Birth

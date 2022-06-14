@@ -57,9 +57,10 @@ function RegisterForm({ onSubmit }) {
 
 	return (
 		<form
-			className={` w-xl flex flex-col relative bg-white  max-w-xl w-full  self-start  p-y-10 space-y-6 `}
+			className={`min-w-[38rem] w-xl flex flex-col relative bg-white  max-w-xl w-full  self-start  p-y-10 space-y-6 `}
 			encType="multipart/form-data"
 			onSubmit={handleSubmit(onSubmitHandler)}
+			autoComplete="off"
 		>
 			<ImgField setIsDefault={setIsDefault} setFile={setFile} />
 			<div className="flex w-full justify-between gap-x-4">
@@ -69,6 +70,7 @@ function RegisterForm({ onSubmit }) {
 					name="firstName"
 					register={register}
 					error={errors.firstName}
+					autofocus={true}
 				/>
 				<InputField
 					label="Last Name"
@@ -78,6 +80,7 @@ function RegisterForm({ onSubmit }) {
 					error={errors.lastName}
 				/>
 			</div>
+			<DatePicker setDate={setDate} />
 			<InputField
 				label="Password"
 				type="password"
@@ -94,7 +97,6 @@ function RegisterForm({ onSubmit }) {
 				register={register}
 				error={errors.confirmPassword}
 			/>
-			<DatePicker setDate={setDate} />
 			<div>
 				<Button w={'w-full mt-6'} p={'p-4'} isValid={isValid} type="submit">
 					Register

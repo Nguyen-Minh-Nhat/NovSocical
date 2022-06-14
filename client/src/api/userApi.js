@@ -1,46 +1,49 @@
-import axiosClient from "./axiosClient";
-import StorageKeys from "../constants/storageKeys";
+import axiosClient from './axiosClient';
+import StorageKeys from '../constants/storageKeys';
 
 const userApi = {
-    register(data) {
-        const url = "auth/register";
-        return axiosClient.post(url, data);
-    },
+	register(data) {
+		const url = 'auth/register';
+		return axiosClient.post(url, data);
+	},
 
-    login(data) {
-        const url = "auth/login";
-        return axiosClient.post(url, data);
-    },
-    async getUser() {
-        const accessToken = localStorage.getItem(StorageKeys.accessToken);
+	login(data) {
+		const url = 'auth/login';
+		return axiosClient.post(url, data);
+	},
+	async getUser() {
+		const accessToken = localStorage.getItem(StorageKeys.accessToken);
 
-        const url = "/auth";
-        const response = await axiosClient.get(url, {
-            headers: { accessToken },
-        });
-        return response;
-    },
+		const url = '/auth';
+		return axiosClient.get(url, {
+			headers: { accessToken },
+		});
+	},
 
-    async getUserById(id) {
-        const accessToken = localStorage.getItem(StorageKeys.accessToken);
-        const url = `/user/${id}`;
+	async getUserById(id) {
+		const accessToken = localStorage.getItem(StorageKeys.accessToken);
+		const url = `/user/profile/${id}`;
 
-        const response = await axiosClient.get(url, {
-            headers: { accessToken },
-        });
+		return axiosClient.get(url, {
+			headers: { accessToken },
+		});
+	},
+	async getAllFollowingUsers(id) {
+		const accessToken = localStorage.getItem(StorageKeys.accessToken);
+		const url = `/user/following/${id}`;
 
-        return response;
-    },
-    async getProfileByID(id) {
-        const accessToken = localStorage.getItem(StorageKeys.accessToken);
-        const url = `/post/profile/${id}`;
+		return axiosClient.get(url, {
+			headers: { accessToken },
+		});
+	},
 
-        const response = await axiosClient.get(url, {
-            headers: { accessToken },
-        });
-
-        return response;
-    },
+	async updateUser(data) {
+		const accessToken = localStorage.getItem(StorageKeys.accessToken);
+		const url = `user/update`;
+		return axiosClient.patch(url, data, {
+			headers: { accessToken },
+		});
+	},
 };
 
 export default userApi;

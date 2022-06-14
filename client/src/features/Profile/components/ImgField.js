@@ -1,0 +1,116 @@
+import React, { useEffect, useState } from "react";
+import Avatars from "../../../assets/images/avatars";
+import Box from "../../../components/Box";
+import Button from "../../../components/Button";
+import Modal from "../../../components/Modal";
+import CloudImg from "../../Post/components/CloudImg";
+
+function ImgField({ setIsDefault, setFile, initialValue }) {
+  const [isOpenSelectAvt, setIsOpenSelectAvt] = useState(false);
+  const [avatarSelected, setAvatarSelected] = useState({});
+
+  const convertPathToNameAvatar = (avatarPath) => {
+    const nameAvatar =
+      avatarPath.slice(avatarPath.indexOf("avatar"), avatarPath.indexOf(".")) +
+      ".svg";
+    return nameAvatar;
+  };
+
+  useEffect(() => {
+    setAvatarSelected({
+      type: initialValue ? "cloud" : "local",
+      path: initialValue || Avatars[0],
+    });
+    if (!initialValue) {
+      const file = convertPathToNameAvatar(Avatars[0]);
+      setFile(file);
+      setIsDefault(true);
+    }
+  }, []);
+
+  const handleOnclick = (e, avatar) => {
+    if (e.target.classList.contains("default-avatar")) {
+      const file = convertPathToNameAvatar(avatar);
+      setAvatarSelected({ type: "local", path: avatar });
+      setFile(file);
+      setIsDefault(true);
+    } else {
+      const file = e.target.files[0];
+      setAvatarSelected({ type: "local", path: URL.createObjectURL(file) });
+      setIsDefault(false);
+      setFile(file);
+    }
+  };
+
+  return (
+    <div className="flex gap-x-8">
+      <div className="w-[15rem] p-2 h-[15rem] flex justify-center items-center bg-slate-100 dark:bg-indigo-850 rounded-xl">
+        <div className="w-full h-full rounded-xl overflow-hidden">
+          {avatarSelected.type === "cloud" ? (
+            <CloudImg publicId={avatarSelected.path} />
+          ) : (
+            <img src={avatarSelected.path} className="w-full h-full" alt="" />
+          )}
+        </div>
+      </div>
+      <div className="flex-1 flex flex-col justify-between ">
+        <input
+          type="file"
+          id="file"
+          className="w-20 h-20 appearance-none hidden"
+          onChange={handleOnclick}
+        />
+
+        <Button w="w-full" p="p-4" shadow="none">
+          <label htmlFor="file" className="block w-full cursor-pointer">
+            Upload
+          </label>
+        </Button>
+        <div className="text-center">Or</div>
+        <Button w="w-full" p="p-4" shadow="none">
+          <div
+            className="w-full cursor-pointer"
+            onClick={() => setIsOpenSelectAvt(true)}
+          >
+            Veta's Avatars
+          </div>
+        </Button>
+      </div>
+      {isOpenSelectAvt && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,0.5)] flex z-50 justify-center items-center">
+          <div className="flex w-[55rem] rounded-[2rem] h-[50rem] flex-wrap bg-slate-50 justify-around p-4 overflow-hidden">
+            {Avatars.map((avatar, index) => (
+              <div
+                key={index}
+                className={`w-40 h-40 border-2 rounded-[2rem] border-transparent border-solid ${
+                  avatarSelected.path === avatar ? "bg-slate-400" : ""
+                }`}
+              >
+                <img
+                  src={avatar}
+                  alt=""
+                  className="cursor-pointer default-avatar w-full h-full object-contain"
+                  onClick={(e) => handleOnclick(e, avatar)}
+                />
+              </div>
+            ))}
+
+            <Button
+              type="button"
+              onClick={() => {
+                setIsOpenSelectAvt(false);
+              }}
+              rounded="rounded-xl"
+              w="w-full"
+              custom="close-position-avt"
+            >
+              Confirm
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default ImgField;

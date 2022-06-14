@@ -1,11 +1,20 @@
 import React from 'react';
+import './Spinner.css';
 
-function Spinner({ custom }) {
+function Spinner() {
 	return (
-		<div
-			style={{ borderTopColor: 'transparent' }}
-			className={`w-16 h-16 border-4 border-indigo-600 border-dotted rounded-full animate-spin ${custom}`}
-		></div>
+		<>
+			<svg className="spinner " viewBox="0 0 50 50">
+				<circle
+					className="path"
+					cx="25"
+					cy="25"
+					r="20"
+					fill="none"
+					strokeWidth="5"
+				></circle>
+			</svg>
+		</>
 	);
 }
 

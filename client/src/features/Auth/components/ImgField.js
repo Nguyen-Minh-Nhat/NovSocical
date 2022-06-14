@@ -4,7 +4,7 @@ import Box from '../../../components/Box';
 import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
 
-function ImgField({ setIsDefault, setFile }) {
+function ImgField({ setIsDefault, setFile, initialValue }) {
 	const [isOpenSelectAvt, setIsOpenSelectAvt] = useState(false);
 	const [avatarSelected, setAvatarSelected] = useState(Avatars[0]);
 
@@ -67,7 +67,10 @@ function ImgField({ setIsDefault, setFile }) {
 				</Button>
 			</div>
 			{isOpenSelectAvt && (
-				<Modal setIsOpen={setIsOpenSelectAvt}>
+				<Modal
+					setIsOpen={setIsOpenSelectAvt}
+					closePosition="close-position-avt"
+				>
 					<div className="flex w-[55rem] rounded-[2rem] h-[50rem] flex-wrap bg-slate-50 justify-around p-4 overflow-hidden">
 						{Avatars.map((avatar, index) => (
 							<div
@@ -84,7 +87,12 @@ function ImgField({ setIsDefault, setFile }) {
 								/>
 							</div>
 						))}
-						<Button rounded="rounded-xl" w="w-full" custom="close-position">
+						<Button
+							type="button"
+							rounded="rounded-xl"
+							w="w-full"
+							custom="close-position-avt"
+						>
 							Confirm
 						</Button>
 					</div>

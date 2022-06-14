@@ -1,59 +1,61 @@
-import StorageKeys from '../constants/storageKeys';
-import axiosClient from './axiosClient';
+import StorageKeys from "../constants/storageKeys";
+import axiosClient from "./axiosClient";
 const accessToken = localStorage.getItem(StorageKeys.accessToken);
 
 const postApi = {
-	create(data) {
-		const url = '/post/create';
+  create(data) {
+    const url = "/post/create";
+    return axiosClient.post(url, data, {
+      headers: { accessToken },
+    });
+  },
 
-		return axiosClient.post(url, data, {
-			headers: { accessToken },
-		});
-	},
+  async getAll(page = 1) {
+    const url = `/post/?page=${page}&limit=${5}`;
+    const accessToken = localStorage.getItem(StorageKeys.accessToken);
+    return axiosClient.get(url, {
+      headers: { accessToken },
+    });
+  },
+  async getPostById(id) {
+    const url = `/posts/${id}`;
 
-	async getAll() {
-		const url = '/post';
-		const accessToken = localStorage.getItem(StorageKeys.accessToken);
-		const res = await axiosClient.get(url, {
-			headers: { accessToken },
-		});
-		return res;
-	},
-	async getPostById(id) {
-		const url = `/posts/${id}`;
+    return axiosClient.get(url, {
+      headers: { accessToken },
+    });
+  },
 
-		const res = await axiosClient.get(url, {
-			headers: { accessToken },
-		});
-		return res;
-	},
+  async updatePostById(id, data) {
+    const url = `/post/update/${id}`;
+    return axiosClient.put(url, data, {
+      headers: { accessToken },
+    });
+  },
+  async getPostByUserID(id) {
+    const accessToken = localStorage.getItem(StorageKeys.accessToken);
+    const url = `/post/profile/${id}`;
 
-	async updatePostById(id, data) {
-		const url = `/post/update/${id}`;
-		const res = await axiosClient.put(url, data, {
-			headers: { accessToken },
-		});
-		return res;
-	},
+    return axiosClient.get(url, {
+      headers: { accessToken },
+    });
+  },
 
-	async deletePostById(id) {
-		const url = `/post/delete/${id}`;
-		const res = await axiosClient.delete(url, {
-			headers: { accessToken },
-		});
-		return res;
-	},
-	async setLove(postID) {
-		const url = `/post/love`;
-		const res = await axiosClient.put(
-			url,
-			{ postID },
-			{
-				headers: { accessToken },
-			}
-		);
-		return res;
-	},
+  async deletePostById(id) {
+    const url = `/post/delete/${id}`;
+    return axiosClient.delete(url, {
+      headers: { accessToken },
+    });
+  },
+  async setLove(postID) {
+    const url = `/post/love`;
+    return axiosClient.put(
+      url,
+      { postID },
+      {
+        headers: { accessToken },
+      },
+    );
+  },
 };
 
 export default postApi;

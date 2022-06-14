@@ -11,15 +11,14 @@ import ProfileSidebar from '../components/ProfileSidebar';
 function Timeline({ user }) {
 	const dispatch = useDispatch();
 	const [isLoading, setIsLoading] = useState(true);
-	// const [postList, setPostList] = useState();
 	const postList = useSelector((state) => state.post.postList);
 	useEffect(() => {
 		const getProfileByID = async () => {
 			try {
-				const res = await userApi.getProfileByID(user.id);
+				const res = await postApi.getPostByUserID(user._id);
 				if (res.data.success) {
 					setIsLoading(false);
-					const action = setPostList(res.data.listOfPost);
+					const action = setPostList(res.data.post);
 					dispatch(action);
 					setIsLoading(false);
 				} else {
@@ -30,26 +29,11 @@ function Timeline({ user }) {
 			}
 		};
 		getProfileByID();
-	}, []);
-	// useEffect(() => {
-	// 	const getPosts = async () => {
-	// 		try {
-	// 			const res = await postApi.getAll();
-	// 			if (res.data.success) {
-	// 				const action = setPostList(res.data.listOfPost);
-	// 				dispatch(action);
-	// 				setIsLoading(false);
-	// 			}
-	// 		} catch (error) {
-	// 			alert(error);
-	// 		}
-	// 	};
-	// 	getPosts();
-	// }, []);
+	}, [user]);
+
 	return (
 		<div className="flex w-full">
 			<ProfileSidebar />
-
 			<div className="flex-1">
 				<Post />
 				<ListOfPost postList={postList} isLoading={isLoading} />

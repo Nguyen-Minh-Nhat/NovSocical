@@ -23,7 +23,7 @@ function LoginForm({ onSubmit }) {
 
 	return (
 		<form
-			className="max-w-xl w-full mx-auto bg-white rounded-lg  space-y-8"
+			className="max-w-xl w-full mx-auto bg-white rounded-lg space-y-8"
 			onSubmit={handleSubmit(onSubmitForm)}
 		>
 			{/* email */}
@@ -46,18 +46,7 @@ function LoginForm({ onSubmit }) {
 					error={errors.password}
 				/>
 			</div>
-			<div className="flex justify-between text-base">
-				<div className="flex items-center space-x-2">
-					<input
-						className="h-6 w-6 border text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-						type="checkbox"
-						name="remember"
-						id="remember"
-					/>
-					<label htmlFor="remember" className="text-2xl">
-						Remember me
-					</label>
-				</div>
+			<div className="flex justify-between flex-col text-base">
 				<div>
 					<a href="http://" className="text-2xl text-indigo-600">
 						Forgot your Password?

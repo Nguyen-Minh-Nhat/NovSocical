@@ -1,45 +1,29 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-const navbarItem = [
-	{
-		title: 'Timeline',
-		path: 'timeline',
-	},
-	{
-		title: 'About',
-		path: 'about',
-	},
-	{
-		title: 'Friends',
-		path: 'friends',
-	},
-	{
-		title: 'Photos',
-		path: 'photos',
-	},
-];
+import React, { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 
 const stylesItem =
-	'w-[calc(100%_/_4)] border-x-2 rounded-lg border-solid border-transparent h-full flex justify-center items-center transition-all duration-500';
+  "w-[calc(100%_/_4)] h-full flex justify-center items-center transition-all duration-200";
 
-function ProfileNavbar() {
-	return (
-		<div className="h-[6.4rem] w-full bg-white dark:bg-indigo-950 shadow-md rounded-lg flex items-center overflow-hidden ">
-			{navbarItem.map((item) => (
-				<NavLink
-					to={item.path}
-					key={item.title}
-					className={({ isActive }) =>
-						isActive
-							? `${stylesItem} bg-[#bfdbfe] border-indigo-600 text-indigo-600`
-							: `${stylesItem} text-gray-600 dark:text-textColorDark`
-					}
-				>
-					{item.title}
-				</NavLink>
-			))}
-		</div>
-	);
+function ProfileNavbar({ navbarItem }) {
+  const [activeTab, setActiveTab] = useState(navbarItem[0]?.path);
+  return (
+    <div className="h-[5.2rem] w-full bg-white dark:bg-indigo-950 shadow-md rounded-xl flex items-center overflow-hidden ">
+      {navbarItem.map((item) => (
+        <Link
+          to={item.path}
+          key={item.title}
+          onClick={() => setActiveTab(item?.path)}
+          className={`${
+            activeTab === item?.path
+              ? `${stylesItem} bg-[#bfdbfe] text-indigo-600 rounded-xl`
+              : `${stylesItem} text-gray-600 dark:text-textColorDark hover:dark:text-white`
+          }`}
+        >
+          {item.title}
+        </Link>
+      ))}
+    </div>
+  );
 }
 
-export default ProfileNavbar;
+export default React.memo(ProfileNavbar);

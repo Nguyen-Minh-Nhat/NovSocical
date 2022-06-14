@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import postApi from '../../../api/postApi';
 import { updatePost } from '../postSlice';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 function Like({ isLiked, postID, socket }) {
 	const dispatch = useDispatch();
@@ -27,10 +28,10 @@ function Like({ isLiked, postID, socket }) {
 					className="cursor-pointer flex-1 text-center rounded-lg p-2 hover:bg-slate-200 dark:hover:bg-indigo-1050 relative "
 					onClick={handleLikePost}
 				>
-					{isLiked === false ? (
-						<i className="text-black dark:text-textColorDark far fa-thumbs-up mr-2"></i>
+					{isLiked ? (
+						<AiFillHeart className="inline text-4xl mr-2 text-red-600" />
 					) : (
-						<i className="text-indigo-600 fas fa-thumbs-up mr-2"></i>
+						<AiOutlineHeart className="inline text-4xl mr-2  " />
 					)}
 					Like
 				</div>

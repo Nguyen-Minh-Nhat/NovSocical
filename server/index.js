@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 const express = require('express');
 const fileUpload = require('express-fileupload');
@@ -11,8 +10,8 @@ const postRouter = require('./routes/post');
 const commentRouter = require('./routes/comment');
 const childCommentRouter = require('./routes/childComment');
 const userRouter = require('./routes/user');
+const chatRouter = require('./routes/chat');
 const { Server } = require('socket.io');
-
 
 const app = express();
 app.use(cors());
@@ -44,6 +43,7 @@ app.use('/api/post', postRouter);
 app.use('/api/comment', commentRouter);
 app.use('/api/childComment', childCommentRouter);
 app.use('/api/user', userRouter);
+app.use('/api/chat', chatRouter);
 
 http.listen(process.env.PORT, () => {
 	console.log(`Server started on port ${process.env.PORT}`);

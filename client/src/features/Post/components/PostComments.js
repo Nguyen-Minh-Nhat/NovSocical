@@ -2,36 +2,6 @@ import React, { useEffect, useState } from 'react';
 import commentApi from '../../../api/commentApi';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
-const myListOfComments = [
-	{
-		_id: 1,
-		commentText: '2',
-		commentImage: '',
-		user: { _id: '1', name: 'Nhat', avatar: '' },
-		post: { _id: '' },
-	},
-	{
-		_id: 1,
-		commentText: '3',
-		commentImage: '',
-		user: { _id: '1', name: 'Nhat', avatar: '' },
-		post: { _id: '' },
-	},
-	{
-		_id: 1,
-		commentText: '4',
-		commentImage: '',
-		user: { _id: '1', name: 'Nhat', avatar: '' },
-		post: { _id: '' },
-	},
-	{
-		_id: 1,
-		commentText: '5',
-		commentImage: '',
-		user: { _id: '1', name: 'Nhat', avatar: '' },
-		post: { _id: '' },
-	},
-];
 
 function PostComments({ postId }) {
 	const [replyOf, setReplyOf] = useState('');
@@ -90,8 +60,7 @@ function PostComments({ postId }) {
 			try {
 				const res = await commentApi.getPostComments(postId);
 				if (res.data.success) {
-					// setListOfComments([...res.data.listOfComments]);
-					setListOfComments(myListOfComments);
+					setListOfComments([...res.data.listOfComments]);
 				} else console.log(1);
 			} catch (error) {
 				console.log(error);
